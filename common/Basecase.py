@@ -35,7 +35,7 @@ def click_element(driver, by, locator):
 
 
 def sendkeys_element(driver, by, locator, value):
-    element = find_element(driver, by, locator)ment.send_keys(value)
+    element = find_element(driver, by, locator).send_keys(value)
 
 
 ''''图片记录'''

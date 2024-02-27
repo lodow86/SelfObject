@@ -9,7 +9,7 @@ from common.get_data import get_login_data
 
 @allure.feature('模块：登录')
 class TestLoginPage(object):
-    @pytest.fixture(scope='class')  # 声明fixture夹具为类级别
+    @pytest.fixture(scope='module')  # 声明fixture为模块级别
     def setup_teardown(self):
         """执行前运行"""
         self.driver = webdriver.Chrome()
@@ -20,15 +20,15 @@ class TestLoginPage(object):
         """执行后运行"""
         self.driver.quit()
 
-    @pytest.fixture(scope='module')    #声明为模块级别
-    def setup_teardown_method(self):
-        self.driver = webdriver.Chrome()
+    @pytest.fixture(scope='class')    #声明为类级别
+    def setup_teardown_method(self, setup_teardown):
+        self.driver = setup_teardown
         self.driver.get('http://47.92.200.213:9999/admin/account.php?action=signin')
 
         yield
 
         sleep(2)
-        # self.driver.close()
+        self.driver.close()
 
     @allure.testcase('http://47.92.200.213:9999/admin/account.php?action=signin', name='登录测试用例')
     @pytest.mark.parametrize(('user', 'password', 'res', 'error'), get_login_data())
